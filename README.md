@@ -1,0 +1,2 @@
+# game-of-life
+This was from a code kata exercise a couple of years ago. The first round we designed a typical, object oriented solution. That version - which unfortunately I didn't keep, consisted of several classes and files -- a lot more code and far more convoluted. This code is from the second iteration where we deliberately avoided objected oriented design, take a data/functional approach that radically simplified the design. The result is straight forward and more flexible (if slightly less readable codewise). It also faster and lighter in terms of resources.
