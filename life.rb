@@ -33,7 +33,7 @@ def fertile_ground living_cells
   end.compact.uniq
 end
 
-def display_living_cells living_cells, height, width
+def display_living_cells living_cells, width, height
   height.times do |y|
     width.times do |x|
       if living_cells.include? [x, y]
@@ -44,15 +44,14 @@ def display_living_cells living_cells, height, width
     end
     print "\n"
   end
-  puts "Cell total = #{living_cells.count}"
+  print "Cell total = #{living_cells.count}"
 end
 
-def run_game(living_cells, width=60, height=35, turn_length=0.3)
-  clear_code = %x{clear}
+def run_game(living_cells, width=40, height=35, turn_length=0.5)
   loop do
-    print clear_code
-    living_cells = next_generation(living_cells)
+    system('clear')
     display_living_cells(living_cells, width, height)
+    living_cells = next_generation(living_cells)
     sleep turn_length
   end
 end
