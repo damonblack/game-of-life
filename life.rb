@@ -21,17 +21,13 @@ def new_points field
 end
 
 def number_of_neighbors point, field
-  count = 0
-  [-1, 0, 1].each do |x|
-    [-1, 0, 1].each do |y|
-      unless(x == 0 && y == 0)
-        if field.include?([point[0] + x, point[1] + y])
-          count += 1
-        end
-      end
-    end
+  neighbor_offsets.count do |offset|
+    field.include?([point[0] + offset[0], point[1] + offset[1]])
   end
-  count
+end
+
+def neighbor_offsets
+  [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
 end
 
 def potential_points field
