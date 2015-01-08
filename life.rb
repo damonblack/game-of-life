@@ -25,14 +25,12 @@ def number_of_neighbors point, living_cells
 end
 
 def fertile_ground living_cells
-  potential_points = []
-  living_cells.each do |point|
-    LOCAL_OFFSETS.each do |offset|
+  living_cells.flat_map do |point|
+    LOCAL_OFFSETS.map do |offset|
       neighbor = [point[0] + offset[0], point[1] + offset[1]]
-      potential_points << neighbor unless living_cells.include?(neighbor)
+      neighbor unless living_cells.include?(neighbor)
     end
-  end
-  potential_points.uniq
+  end.compact.uniq
 end
 
 def display_living_cells living_cells, height, width

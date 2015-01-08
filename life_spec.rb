@@ -103,15 +103,17 @@ describe "life" do
   describe "#fertile_ground" do
     it "should return a list of neighboring cells for each living cell" do
       # So we don't test the whole world :)
-      ##0#1#2#
-      #0 | | #
-      #1 |█| #
-      #2 | | #
-      ########
-      living_cells = [[1, 1]]
-      points_worth_testing = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2]]
+      ##0#1#2#3#
+      #0x|x|x| #
+      #1x|█|x|x#
+      #2x|x|█|x#
+      #3 |x|x|x#
+      ##########
+      living_cells = [[1,1],[2,2]]
+      points_worth_testing = [[0,0],[0,1],[0,2],[1,0],[1,2],[1,3],[2,0],
+        [2,1],[2,3],[3,1],[3,2],[3,3]]
 
-      expect(fertile_ground(living_cells)).to eq(points_worth_testing)
+      expect(fertile_ground(living_cells)).to match_array(points_worth_testing)
     end
   end
 end
