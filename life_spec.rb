@@ -84,22 +84,6 @@ describe "life" do
     end
   end
 
-  describe "#number_of_neighbors" do
-    it "should correctly count the number of living neighbors" do
-      ##0#1#2#
-      #0█|█| #
-      #1█| | #
-      #2 | | #
-      ########
-      living_cells = [[0, 0],[0,1],[1,0]]
-
-      expect(number_of_neighbors([1,1], living_cells)).to eq(3)
-      expect(number_of_neighbors([0,0], living_cells)).to eq(2)
-      expect(number_of_neighbors([1,2], living_cells)).to eq(1)
-      expect(number_of_neighbors([2,2], living_cells)).to eq(0)
-    end
-  end
-
   describe "#fertile_ground" do
     it "should return a list of neighboring cells for each living cell" do
       # So we don't test the whole world :)

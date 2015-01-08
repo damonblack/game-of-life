@@ -1,6 +1,4 @@
-LOCAL_OFFSETS = [-1,0,1].product([-1,0,1])
-CENTER_OFFSET = [0,0]
-NEIGHBOR_OFFSETS = LOCAL_OFFSETS - [CENTER_OFFSET]
+NEIGHBOR_OFFSETS = [-1,0,1].product([-1,0,1]) - [[0,0]]
 
 def next_generation living_cells
   survivors(living_cells) + births(living_cells)
@@ -8,29 +6,26 @@ end
 
 def survivors living_cells
   living_cells.select do |point|
-    [2,3].include? number_of_neighbors(point, living_cells)
+    [2,3].include?  neighbor_cells(point).count{|neighbor| living_cells.include?(neighbor)}
   end
 end
 
 def births living_cells
   fertile_ground(living_cells).select do |point|
-    number_of_neighbors(point, living_cells) == 3
-  end
-end
-
-def number_of_neighbors point, living_cells
-  NEIGHBOR_OFFSETS.count do |offset|
-    living_cells.include?([point[0] + offset[0], point[1] + offset[1]])
+    neighbor_cells(point).count{|neighbor| living_cells.include?(neighbor)} == 3
   end
 end
 
 def fertile_ground living_cells
   living_cells.flat_map do |point|
-    LOCAL_OFFSETS.map do |offset|
-      neighbor = [point[0] + offset[0], point[1] + offset[1]]
-      neighbor unless living_cells.include?(neighbor)
+    neighbor_cells(point).select do |neighbor|
+      !living_cells.include?(neighbor)
     end
-  end.compact.uniq
+  end.uniq
+end
+
+def neighbor_cells point
+  NEIGHBOR_OFFSETS.map{|offset| [point[0] + offset[0], point[1] + offset[1]]}
 end
 
 def display_living_cells living_cells, width, height
