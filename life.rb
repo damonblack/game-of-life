@@ -35,9 +35,9 @@ def potential_points field
   potential_points.uniq
 end
 
-def display_field field
-  HEIGHT.times do |y|
-    WIDTH.times do |x|
+def display_field field, height, width
+  height.times do |y|
+    width.times do |x|
       if field.include? [x, y]
         print "# "
       else
@@ -49,12 +49,12 @@ def display_field field
   puts "Cell total = #{field.count}"
 end
 
-def run_game(field, turn_length=0.3)
+def run_game(field, width=60, height=35, turn_length=0.3)
   clear_code = %x{clear}
   loop do
     print clear_code
     field = next_generation(field)
-    display_field(field)
+    display_field(field, width, height)
     sleep turn_length
   end
 end
