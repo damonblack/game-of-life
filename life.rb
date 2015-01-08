@@ -7,21 +7,15 @@ def next_generation field
 end
 
 def surviving_points field
-  still_alive = []
-  field.each do |point|
-    if [2,3].include? number_of_neighbors(point, field)
-      still_alive << point
-    end
+  field.select do |point|
+    [2,3].include? number_of_neighbors(point, field)
   end
-  still_alive
 end
 
 def new_points field
-  births = []
-  potential_points(field).each do |point|
-    births << point if number_of_neighbors(point, field) == 3
+  potential_points(field).select do |point|
+    number_of_neighbors(point, field) == 3
   end
-  births
 end
 
 def number_of_neighbors point, field
