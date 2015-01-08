@@ -2,43 +2,43 @@ LOCAL_OFFSETS = [-1,0,1].product([-1,0,1])
 CENTER_OFFSET = [0,0]
 NEIGHBOR_OFFSETS = LOCAL_OFFSETS - [CENTER_OFFSET]
 
-def next_generation field
-  surviving_points(field) + new_points(field)
+def next_generation living_cells
+  survivors(living_cells) + births(living_cells)
 end
 
-def surviving_points field
-  field.select do |point|
-    [2,3].include? number_of_neighbors(point, field)
+def survivors living_cells
+  living_cells.select do |point|
+    [2,3].include? number_of_neighbors(point, living_cells)
   end
 end
 
-def new_points field
-  potential_points(field).select do |point|
-    number_of_neighbors(point, field) == 3
+def births living_cells
+  fertile_ground(living_cells).select do |point|
+    number_of_neighbors(point, living_cells) == 3
   end
 end
 
-def number_of_neighbors point, field
+def number_of_neighbors point, living_cells
   NEIGHBOR_OFFSETS.count do |offset|
-    field.include?([point[0] + offset[0], point[1] + offset[1]])
+    living_cells.include?([point[0] + offset[0], point[1] + offset[1]])
   end
 end
 
-def potential_points field
+def fertile_ground living_cells
   potential_points = []
-  field.each do |point|
+  living_cells.each do |point|
     LOCAL_OFFSETS.each do |offset|
       neighbor = [point[0] + offset[0], point[1] + offset[1]]
-      potential_points << neighbor unless field.include?(neighbor)
+      potential_points << neighbor unless living_cells.include?(neighbor)
     end
   end
   potential_points.uniq
 end
 
-def display_field field, height, width
+def display_living_cells living_cells, height, width
   height.times do |y|
     width.times do |x|
-      if field.include? [x, y]
+      if living_cells.include? [x, y]
         print "# "
       else
         print "  "
@@ -46,15 +46,15 @@ def display_field field, height, width
     end
     print "\n"
   end
-  puts "Cell total = #{field.count}"
+  puts "Cell total = #{living_cells.count}"
 end
 
-def run_game(field, width=60, height=35, turn_length=0.3)
+def run_game(living_cells, width=60, height=35, turn_length=0.3)
   clear_code = %x{clear}
   loop do
     print clear_code
-    field = next_generation(field)
-    display_field(field, width, height)
+    living_cells = next_generation(living_cells)
+    display_living_cells(living_cells, width, height)
     sleep turn_length
   end
 end
