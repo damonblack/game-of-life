@@ -1,3 +1,7 @@
+LOCAL_OFFSETS = [-1,0,1].product([-1,0,1])
+CENTER_OFFSET = [0,0]
+NEIGHBOR_OFFSETS = LOCAL_OFFSETS - [CENTER_OFFSET]
+
 def next_generation field
   surviving_points(field) + new_points(field)
 end
@@ -21,25 +25,17 @@ def new_points field
 end
 
 def number_of_neighbors point, field
-  neighbor_offsets.count do |offset|
+  NEIGHBOR_OFFSETS.count do |offset|
     field.include?([point[0] + offset[0], point[1] + offset[1]])
   end
-end
-
-def neighbor_offsets
-  [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
 end
 
 def potential_points field
   potential_points = []
   field.each do |point|
-    [-1, 0, 1].each do |x|
-      [-1, 0, 1].each do |y|
-        neighbor = [point[0] + x, point[1] + y]
-        unless field.include?(neighbor)
-          potential_points << neighbor
-        end
-      end
+    LOCAL_OFFSETS.each do |offset|
+      neighbor = [point[0] + offset[0], point[1] + offset[1]]
+      potential_points << neighbor unless field.include?(neighbor)
     end
   end
   potential_points.uniq
